@@ -1,0 +1,32 @@
+package com.movieplatform.Entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "review", schema = "oop_db")
+public class Review {
+    @Id
+    @Column(name = "id", nullable = false)
+    private Integer id;
+
+    @Size(max = 45)
+    @Column(name = "hedder", length = 45)
+    private String hedder;
+
+    @Lob
+    @Column(name = "body")
+    private String body;
+
+    @Column(name = "likes")
+    private Integer likes;
+
+    @Column(name = "dislikes")
+    private Integer dislikes;
+
+
+}
