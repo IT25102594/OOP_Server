@@ -24,7 +24,7 @@
                 data.forEach(r => {
                     html += `
                             <div class="card">
-                                <h3>பயனர்: ${r.userName}</h3>
+                                <h3>User: ${r.userName}</h3>
                                 <p id="text-${r.id}">Review: ${r.comment}</p>
                                 <button class="edit-btn" onclick="editReview(${r.id})">Edit</button>
                                 <button class="del-btn" onclick="deleteReview(${r.id})">Delete</button>
