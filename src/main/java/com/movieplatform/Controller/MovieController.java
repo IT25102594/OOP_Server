@@ -4,26 +4,17 @@ import com.movieplatform.Entity.Movie;
 import com.movieplatform.Repository.MovieRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin
-@RequestMapping(path = "movie")
+@RequestMapping(path = "/movie")
 @RestController
 public class MovieController {
 
     @Autowired
     private MovieRepository movieRepository;
-
 
     // 1. Get all movies
     @GetMapping
@@ -31,15 +22,13 @@ public class MovieController {
         return movieRepository.findAll();
     }
 
-
     // 2. Add a new movie
     @PostMapping
     public Movie addMovie(@RequestBody Movie movie) {
         return movieRepository.save(movie);
     }
 
-
-    // 3. Update an existing movie
+    // 3. Update movie
     @PutMapping("/{id}")
     public Movie updateMovie(@PathVariable Integer id,
                              @RequestBody Movie movieDetails) {
@@ -65,8 +54,7 @@ public class MovieController {
                 new RuntimeException("Movie not found with id " + id));
     }
 
-
-    // 4. Delete a movie
+    // 4. Delete movie
     @DeleteMapping("/{id}")
     public String deleteMovie(@PathVariable Integer id) {
 
