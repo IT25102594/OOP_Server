@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "user", schema = "oop_db")
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +27,14 @@ public class User {
     private String password;
 
     @Size(max = 45)
-    @Column(name = "gmail", length = 45)
+    @NotNull
+    @Column(name = "gmail", nullable = false, length = 45)
     private String gmail;
 
     @Column(name = "admin")
     private Byte admin;
 
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wishlist_id")
     private Wishlist wishlist;
 
