@@ -1,66 +1,61 @@
 package com.movieplatform.Controller;
 
 import com.movieplatform.Entity.Rental;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.ui.Model;
-import java.io.*;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import com.movieplatform.Repository.RentalRepository;
+import com.movieplatform.Util.RentalUtil; // Import your new static utility class!
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
+
+@CrossOrigin(origins = "*")
+@RequestMapping(path = "rental")
+@RestController
 public class RentalController {
 
-    private final String FILE_PATH = "src/main/resources/rentals.txt";
+    @Autowired
+    private RentalRepository rentalRepository;
 
-
-    @GetMapping("/rent")
-    public String showRentPage() {
-        return "rent-movie";
+    @GetMapping
+    public List<Rental> getall(){
+        return rentalRepository.findAll();
     }
 
-
-    @PostMapping("/rent-movie")
-    public String processRental(@RequestParam String movieId, @RequestParam String userId) {
-        String rentalId = "R" + System.currentTimeMillis(); // temporary ID
-        LocalDate rentalDate = LocalDate.now();
-        LocalDate dueDate = rentalDate.plusDays(7); // 7 days
-
-        // Format: rentalId | userId | movieId | rentalDate | dueDate | status
-        String data = String.format("%s | %s | %s | %s | %s | ACTIVE",
-                rentalId, userId, movieId, rentalDate, dueDate);
-
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(FILE_PATH, true)))) {
-            out.println(data);
-        } catch (IOException e) {
-            e.printStackTrace();
+    // ── POST: CREATES RENTAL WITH UTILITY TRANSACTION PROTECTION ──
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody Rental rental) {
+        if (rental.getUsers() == null || rental.getMovies() == null) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Missing User or Movie reference."));
         }
-        return "redirect:/view-rentals";
-    }
 
-    // 3. all rent
-    @GetMapping("/view-rentals")
-    public String viewRentals(Model model) {
-        List<String> rentals = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                rentals.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        Integer userId = rental.getUsers().getId();
+        Integer movieId = rental.getMovies().getId();
+
+        // 🛑 CALL STATIC UTILITY BLOCKER: Checks database for an active token pass
+        if (RentalUtil.hasActiveRental(rentalRepository, userId, movieId)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("error", "You already have an active rental pass for this movie!"));
         }
-        model.addAttribute("allRentals", rentals);
-        return "view-rentals";
+
+        // If validation clears, timestamp and persist the entity
+        Instant now = Instant.now();
+        rental.setRentalDate(now);
+        rental.setExpiryDate(now.plus(2, ChronoUnit.DAYS)); // 48-Hour access window
+
+        Rental saved = rentalRepository.save(rental);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    // 4. (Update/Delete Operation)
-    @PostMapping("/return-movie")
-    public String returnMovie(@RequestParam String rentalId) {
-
-        return "redirect:/view-rentals";
+    // ── GET: GATEKEEPER SERVICE ENDPOINT ──
+    @GetMapping("/check")
+    public ResponseEntity<Map<String, Object>> hasRented(@RequestParam Integer userId, @RequestParam Integer movieId) {
+        // 🌟 Execute the exact same shared utility code block statically
+        boolean isValid = RentalUtil.hasActiveRental(rentalRepository, userId, movieId);
+        return ResponseEntity.ok(Map.of("hasActiveRental", isValid));
     }
 }
