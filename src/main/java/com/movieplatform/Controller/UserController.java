@@ -1,6 +1,7 @@
 package com.movieplatform.Controller;
 
 import com.movieplatform.Entity.User;
+import com.movieplatform.Entity.Wishlist;
 import com.movieplatform.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,7 +22,40 @@ public class UserController {
     public List<User> getall(){
         return userRepository.findAll();
     }
-    
+
+    @PostMapping("/login")
+    public User login(@RequestBody User user){
+        // 1. Check what Java received from JS
+        System.out.println("JAVA RECEIVED - Email: " + user.getGmail());
+        System.out.println("JAVA RECEIVED - Password: " + user.getPassword());
+
+        User check = userRepository.findByGmail(user.getGmail());
+
+        // 2. Check what Java found in the Database
+        if(check != null) {
+            System.out.println("DB FOUND - User: " + check.getName() + " | Password: " + check.getPassword());
+        } else {
+            System.out.println("DB FOUND - Absolutely nothing (null) for email: " + user.getGmail());
+        }
+
+        if(check != null){
+            if(check.getPassword().equals(user.getPassword())){
+                return check;
+            } else {
+                System.out.println("FAILED - Passwords did not match!");
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    // create new user
+    @PostMapping("/register")
+    public User create(@RequestBody User user) {
+        return userRepository.save(user);
+    }
+
 
     // get single user by id
     @GetMapping("/{id}")
@@ -30,12 +64,7 @@ public class UserController {
                 .orElseThrow(() -> new RuntimeException("user not found with id: " + id));
     }
 
-    // create new user
-    @PostMapping
-    public User create(@RequestBody User user) {
-        // just save it, jpa handles everything
-        return userRepository.save(user);
-    }
+
 
     // update existing user
     @PutMapping("/{id}")
