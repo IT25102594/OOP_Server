@@ -1,48 +1,25 @@
 package com.movieplatform.Repository;
 
-import java.io.*;
-import java.util.ArrayList;
+import com.movieplatform.Entity.Rental;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
 import java.util.List;
+import java.util.Optional;
 
+public interface RentalRepository extends JpaRepository<Rental, Integer> {
 
-public class RentalRepository {
+    List<Rental> findAllByUsers_Id(Integer id);
 
-    private final String FILE_PATH = "src/main/resources/rentals.txt";
-//add new rent
-    public void saveRental(String rentalData) {
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(FILE_PATH, true)))) {
-            out.println(rentalData);
-        } catch (IOException e) {
-            System.err.println("error: " + e.getMessage());
-        }
-    }
+    void deleteById(Integer id);
 
-    // 2. read all rent
-    public List<String> getAllRentals() {
-        List<String> rentals = new ArrayList<>();
-        File file = new File(FILE_PATH);
+    boolean existsByUsers_IdAndMovies_Id(Integer userId, Integer movieId);
 
-        if (!file.exists()) return rentals;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                rentals.add(line);
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading files: " + e.getMessage());
-        }
-        return rentals;
-    }
-
-    // 3. to find rent for specific user id
-    public List<String> findByUserId(String userId) {
-        List<String> userRentals = new ArrayList<>();
-        for (String record : getAllRentals()) {
-            if (record.contains("| " + userId + " |")) {
-                userRentals.add(record);
-            }
-        }
-        return userRentals;
-    }
+    // 🌟 THE FIX: Hardcode the JPQL relationship traversal paths explicitly
+    @Query("SELECT r FROM Rental r WHERE r.users.id = :userId AND r.movies.id = :movieId ORDER BY r.id DESC LIMIT 1")
+    Optional<Rental> findTopByUsersIdAndMoviesIdOrderByIdDesc(
+            @Param("userId") Integer userId,
+            @Param("movieId") Integer movieId
+    );
 }
