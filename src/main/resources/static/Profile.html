@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MoviePlatform — Profile</title>
+    <title>Cineflix — Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -134,6 +134,20 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+        }
+        .profile-badge.super {
+            background: rgba(248, 113, 113, 0.12);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+        }
+        .profile-badge.super .badge-text {
+            background: linear-gradient(135deg, #f87171, #dc2626);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .badge-dot.super {
+            background: #f87171;
+            box-shadow: 0 0 8px #f87171;
         }
         .badge-dot {
             width: 5px; height: 5px; border-radius: 50%;
@@ -340,7 +354,7 @@
 
 <!-- Navbar -->
 <nav class="navbar">
-    <a href="home.html" class="nav-logo"><span>Movie</span>Platform</a>
+    <a href="home.html" class="nav-logo"><span>CINE</span>FLIX</a>
     <div class="nav-right">
         <a href="home.html" class="btn-nav">← Home</a>
         <button class="btn-nav btn-logout" onclick="logout()">Logout</button>
@@ -548,13 +562,19 @@
         const badgeDot = badge.querySelector('.badge-dot');
         const badgeText = badge.querySelector('.badge-text');
 
-        if (currentUser.admin === 1) {
+        if (currentUser.admin === 2) {
+            badge.classList.add('super');
+            badgeDot.classList.add('super');
+            badgeText.textContent = 'Superadmin';
+        } else if (currentUser.admin === 1) {
             badge.classList.add('admin');
             badgeDot.classList.add('admin');
             badgeText.textContent = 'Admin';
         } else {
             badge.classList.remove('admin');
+            badge.classList.remove('super');
             badgeDot.classList.remove('admin');
+            badgeDot.classList.remove('super');
             badgeText.textContent = 'Member';
         }
     }
