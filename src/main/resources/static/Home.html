@@ -292,6 +292,7 @@
     </style>
 </head>
 
+<!-- Admin FAB -->
 <a href="admin.html" id="adminFab" style="
   display:none; position:fixed; bottom:28px; right:28px; z-index:9999;
   align-items:center; gap:8px;
@@ -302,17 +303,52 @@
   box-shadow:0 8px 28px rgba(124,58,237,0.5);
   border:1px solid rgba(167,139,250,0.3);
   transition:transform 0.2s,box-shadow 0.2s;">
-    ⚡ Admin Panel
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    Admin Panel
 </a>
+
+<!-- Superadmin FAB (sits above admin FAB) -->
+<a href="superadmin.html" id="superAdminFab" style="
+  display:none; position:fixed; bottom:88px; right:28px; z-index:9999;
+  align-items:center; gap:8px;
+  background:linear-gradient(135deg,#dc2626,#991b1b);
+  color:#fff; text-decoration:none;
+  font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:700;
+  padding:12px 20px; border-radius:50px;
+  box-shadow:0 8px 28px rgba(220,38,38,0.5);
+  border:1px solid rgba(248,113,113,0.3);
+  transition:transform 0.2s,box-shadow 0.2s;">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    Super Admin
+</a>
+
 <script>
     (function(){
         try {
             const u = JSON.parse(sessionStorage.getItem('currentUser'));
-            if (u && u.admin === 1) {
+            if (!u) return;
+
+            // Show admin FAB for admin(1) and superadmin(2)
+            if (u.admin >= 1) {
                 const fab = document.getElementById('adminFab');
                 fab.style.display = 'flex';
                 fab.onmouseenter = () => { fab.style.transform='translateY(-3px)'; fab.style.boxShadow='0 12px 36px rgba(124,58,237,0.65)'; };
                 fab.onmouseleave = () => { fab.style.transform=''; fab.style.boxShadow='0 8px 28px rgba(124,58,237,0.5)'; };
+            }
+
+            // Show superadmin FAB only for superadmin(2)
+            if (u.admin === 2) {
+                const sfab = document.getElementById('superAdminFab');
+                sfab.style.display = 'flex';
+                sfab.onmouseenter = () => { sfab.style.transform='translateY(-3px)'; sfab.style.boxShadow='0 12px 36px rgba(220,38,38,0.65)'; };
+                sfab.onmouseleave = () => { sfab.style.transform=''; sfab.style.boxShadow='0 8px 28px rgba(220,38,38,0.5)'; };
             }
         } catch(e){}
     })();
@@ -331,7 +367,7 @@
         <a href="home.html" class="active">Home</a>
         <a href="movies.html">Movies</a>
         <a href="#">Wishlist</a>
-        <a href="History.html">History</a>
+        <a href="history.html">History</a>
     </div>
     <div class="nav-search">
         <input type="text" id="searchInput" placeholder="Search movies…">
