@@ -9,10 +9,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 
-
-
- // Represents a user comment on a movie within the platform.
-
 @Getter
 @Setter
 @Entity
