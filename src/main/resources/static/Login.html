@@ -460,13 +460,18 @@
                 body: JSON.stringify(payload)
             });
 
-            if (res.ok) {
+            if (res.status === 201) {
                 const user = await res.json();
                 sessionStorage.setItem('currentUser', JSON.stringify(user));
                 setMsg(msgId, '✓ Account created!', true);
                 setTimeout(() => window.location.href = 'home.html', 1000);
-            } else {
-                setMsg(msgId, 'Registration failed. Gmail might be taken.', false);
+            }
+            else if (res.status === 409) {
+                const error = await res.json();
+                setMsg(msgId, error.message || 'Email already registered.', false);
+            }
+            else {
+                setMsg(msgId, 'Registration failed. Please try again.', false);
             }
         } catch (e) {
             setMsg(msgId, 'Cannot connect to server.', false);
