@@ -1,9 +1,7 @@
 package com.movieplatform.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,9 +11,10 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "movie", schema = "oop_db")
+@Table(name = "movie")
 public class Movie {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -31,27 +30,27 @@ public class Movie {
     @Column(name = "country", length = 45)
     private String country;
 
-    @Column(name = "hours")
-    private Instant hours;
+    @Column(name = "duration")
+    private String duration;
 
     @Size(max = 45)
     @Column(name = "shortdescription", length = 45)
     private String shortdescription;
 
-    @Size(max = 45)
-    @Column(name = "description", length = 45)
+    @Size(max = 255)
+    @Column(name = "description")
     private String description;
 
-    @Size(max = 45)
-    @Column(name = "image", length = 45)
+    @Size(max = 255)
+    @Column(name = "image")
     private String image;
 
-    @Size(max = 45)
-    @Column(name = "link", length = 45)
+    @Size(max = 255)
+    @Column(name = "link")
     private String link;
 
-    @Size(max = 45)
-    @Column(name = "trailerlink", length = 45)
+    @Size(max = 255)
+    @Column(name = "trailerlink")
     private String trailerlink;
 
     @Column(name = "imdb")
@@ -62,6 +61,11 @@ public class Movie {
 
     @Column(name = "price")
     private Double price;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
 
 
 }

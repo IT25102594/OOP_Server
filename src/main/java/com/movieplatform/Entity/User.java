@@ -32,7 +32,7 @@ public class User {
     private String gmail;
 
     @Column(name = "admin")
-    private Byte admin;
+    private Integer admin;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wishlist_id")
