@@ -1,16 +1,20 @@
 package com.movieplatform.Controller;
 
 import com.movieplatform.Entity.User;
-import com.movieplatform.Entity.Wishlist;
 import com.movieplatform.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @CrossOrigin
 @RequestMapping(path = "user")
 @RestController
@@ -50,10 +54,28 @@ public class UserController {
         }
     }
 
-    // create new user
+    // create new user with email validation
     @PostMapping("/register")
-    public User create(@RequestBody User user) {
-        return userRepository.save(user);
+    public ResponseEntity<?> create(@RequestBody User user) {
+        // Check if email already exists
+        User existingUser = userRepository.findByGmail(user.getGmail());
+
+        if(existingUser != null) {
+            // Email already exists - return error response
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Email already registered");
+            errorResponse.put("message", "An account with this email already exists");
+
+            System.out.println("REGISTRATION FAILED - Email already exists: " + user.getGmail());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+        }
+
+        // Email is unique - proceed with registration
+        user.setAdmin(0);
+        User savedUser = userRepository.save(user);
+        System.out.println("REGISTRATION SUCCESS - New user created: " + savedUser.getGmail());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
     }
 
 
@@ -66,12 +88,24 @@ public class UserController {
 
 
 
-    // update existing user
+    // update existing user with email validation
     @PutMapping("/{id}")
-    public User update(@PathVariable Integer id, @RequestBody User userDetails) {
+    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody User userDetails) {
         // first check if user exists
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("user not found"));
+
+        // Check if email is being changed to one that already exists
+        if(!user.getGmail().equals(userDetails.getGmail())) {
+            User existingUser = userRepository.findByGmail(userDetails.getGmail());
+            if(existingUser != null) {
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("error", "Email already in use");
+                errorResponse.put("message", "This email is already registered to another account");
+
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+            }
+        }
 
         // update the fields
         user.setName(userDetails.getName());
@@ -80,7 +114,8 @@ public class UserController {
         user.setAdmin(userDetails.getAdmin());
 
         // save n return
-        return userRepository.save(user);
+        User updatedUser = userRepository.save(user);
+        return ResponseEntity.ok(updatedUser);
     }
 
     // delete user
