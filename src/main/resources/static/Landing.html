@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MoviePlatform — Discover Cinema</title>
+  <title>CINEFLIX — Premium Movie Rentals</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -47,17 +47,53 @@
 
     /* NAV */
     .navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 68px; display: flex; align-items: center; justify-content: space-between;
-      padding: 0 56px;
-      background: rgba(7,5,15,0.75); backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      height: 76px;
+      width: 92%;
+      max-width: 1100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 36px;
+      border-radius: 100px;
+      background: rgba(0, 0, 0, 0.22);
+      backdrop-filter: blur(30px) saturate(160%) brightness(110%);
+      -webkit-backdrop-filter: blur(30px) saturate(160%) brightness(110%);
+      box-shadow:
+              rgba(255, 255, 255, 0.15) 0px 0px 0px 0.5px inset,
+              rgba(0, 0, 0, 0.25) 0px 12px 48px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
     }
-    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; color: var(--text); text-decoration: none; }
-    .nav-logo span { color: var(--purple1); }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.75rem;
+      letter-spacing: 3px;
+      text-decoration: none;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 60%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 12px rgba(167,139,250,0.4));
+    }
     .nav-links { display: flex; align-items: center; gap: 4px; }
-    .nav-links a { color: var(--text-sub); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 8px 16px; border-radius: 8px; transition: all 0.22s; }
-    .nav-links a:hover { color: var(--text); background: var(--purple-soft); }
+    .nav-links a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      padding: 9px 18px;
+      border-radius: 50px;
+      transition: 0.3s;
+    }
+    .nav-links a:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+    }
     .nav-right { display: flex; gap: 10px; align-items: center; }
     .btn-outline-nav { background: none; border: 1px solid var(--border); color: var(--text-sub); border-radius: 10px; font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 0.875rem; padding: 9px 20px; cursor: pointer; transition: all 0.22s; text-decoration: none; }
     .btn-outline-nav:hover { border-color: var(--border-h); color: var(--text); }
@@ -186,14 +222,21 @@
 
     /* FOOTER */
     footer { position: relative; z-index: 1; padding: 32px 56px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .foot-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 2px; color: var(--text-sub); }
-    .foot-logo span { color: var(--purple1); }
+    .foot-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.4rem;
+      letter-spacing: 2px;
+      background: linear-gradient(135deg, #fff 0%, #a78bfa 60%, #7c3aed 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
     footer p { font-size: 0.8rem; color: var(--text-dim); }
 
     @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 900px) {
-      .navbar { padding: 0 20px; }
+      .navbar { padding: 0 20px; width: 95%; }
       .nav-links { display: none; }
       .hero { padding: 100px 20px 60px; }
       .features-grid { grid-template-columns: 1fr; }
@@ -215,7 +258,7 @@
 
 <!-- NAV -->
 <nav class="navbar">
-  <a href="home.html" class="nav-logo"><span>Movie</span>Platform</a>
+  <a href="home.html" class="nav-logo">CINEFLIX</a>
   <div class="nav-links">
     <a href="home.html">Browse</a>
     <a href="#features">Features</a>
@@ -229,15 +272,15 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow"><div class="eyebrow-dot"></div> Your Cinema Universe</div>
+  <div class="hero-eyebrow"><div class="eyebrow-dot"></div> Premium Cinema Rentals</div>
   <h1 class="hero-title">
-    Watch<br>
-    <span class="accent">Everything</span><br>
-    <span class="outline-text">Anywhere</span>
+    Rent<br>
+    <span class="accent">Cinema</span><br>
+    <span class="outline-text">On Demand</span>
   </h1>
-  <p class="hero-sub">Stream thousands of movies and series in stunning quality. Discover new favorites, build your watchlist, and lose yourself in every genre.</p>
+  <p class="hero-sub">Rent thousands of movies in stunning quality. Discover new favorites, build your watchlist, and enjoy cinema from the comfort of home.</p>
   <div class="hero-cta">
-    <a href="home.html" class="btn-primary">▶ Start Watching Free</a>
+    <a href="home.html" class="btn-primary">▶ Browse Movies</a>
     <a href="login.html" class="btn-ghost">Sign In</a>
   </div>
 
@@ -249,21 +292,21 @@
     <div class="stat-item"><div class="stat-num">10K+</div><div class="stat-label">Movies</div></div>
     <div class="stat-item"><div class="stat-num">4K</div><div class="stat-label">Ultra HD</div></div>
     <div class="stat-item"><div class="stat-num">50+</div><div class="stat-label">Genres</div></div>
-    <div class="stat-item"><div class="stat-num">Free</div><div class="stat-label">To Join</div></div>
+    <div class="stat-item"><div class="stat-num">24/7</div><div class="stat-label">Access</div></div>
   </div>
 </section>
 
 <!-- FEATURES -->
 <section class="features-section" id="features">
-  <div class="section-eyebrow">Why MoviePlatform</div>
-  <h2 class="section-title">Everything You Need to <span>Stream</span></h2>
+  <div class="section-eyebrow">Why CINEFLIX</div>
+  <h2 class="section-title">Premium Movie <span>Rentals</span></h2>
   <div class="features-grid">
-    <div class="feat-card"><div class="feat-icon">🎬</div><h3>Massive Library</h3><p>Over 10,000 titles across every genre — from Hollywood blockbusters to indie gems and international hits.</p></div>
-    <div class="feat-card"><div class="feat-icon">⚡</div><h3>Instant Streaming</h3><p>No buffering, no waiting. Our adaptive streaming engine delivers crystal-clear video in seconds.</p></div>
-    <div class="feat-card"><div class="feat-icon">🔖</div><h3>Smart Watchlist</h3><p>Save anything you want to watch later. Your personalised watchlist syncs across all your devices.</p></div>
-    <div class="feat-card"><div class="feat-icon">🎯</div><h3>Personalised Picks</h3><p>The more you watch, the smarter your recommendations get. Discover films you'll actually love.</p></div>
+    <div class="feat-card"><div class="feat-icon">🎬</div><h3>Massive Library</h3><p>Over 10,000 titles across every genre — from Hollywood blockbusters to indie gems and international cinema.</p></div>
+    <div class="feat-card"><div class="feat-icon">⚡</div><h3>Instant Access</h3><p>Rent once and watch anytime during your rental period. Stream in seconds with our adaptive HD delivery.</p></div>
+    <div class="feat-card"><div class="feat-icon">🔖</div><h3>Smart Wishlist</h3><p>Save movies you want to watch later. Your personalised watchlist syncs across all your devices.</p></div>
+    <div class="feat-card"><div class="feat-icon">🎯</div><h3>Curated Picks</h3><p>Discover handpicked collections and recommendations based on your viewing history and preferences.</p></div>
     <div class="feat-card"><div class="feat-icon">📺</div><h3>4K &amp; HDR</h3><p>Experience cinema the way it was meant to be seen — in stunning 4K with HDR and Dolby support.</p></div>
-    <div class="feat-card"><div class="feat-icon">🆓</div><h3>Free to Join</h3><p>Create your account in seconds. No credit card, no hidden fees. Just sign up and start streaming.</p></div>
+    <div class="feat-card"><div class="feat-icon">💳</div><h3>Flexible Rentals</h3><p>Affordable pricing with various rental periods. Pay only for what you watch, when you watch it.</p></div>
   </div>
 </section>
 
@@ -272,15 +315,15 @@
   <div class="preview-inner">
     <div class="preview-text">
       <div class="eyebrow">Curated Just For You</div>
-      <h2>Movies That <span>Move</span> You</h2>
-      <p>From pulse-pounding action to tearjerking drama, our editors curate the best of what cinema has to offer every single week.</p>
+      <h2>Movies That <span>Matter</span></h2>
+      <p>From pulse-pounding action to tearjerking drama, our curators select the best of what cinema has to offer every single week.</p>
       <div class="preview-list">
-        <div class="preview-list-item"><span class="check">✦</span> New releases every Friday</div>
-        <div class="preview-list-item"><span class="check">✦</span> Editor's Pick collections</div>
+        <div class="preview-list-item"><span class="check">✦</span> New releases every week</div>
+        <div class="preview-list-item"><span class="check">✦</span> Curator's Pick collections</div>
         <div class="preview-list-item"><span class="check">✦</span> Trending &amp; Top Rated charts</div>
         <div class="preview-list-item"><span class="check">✦</span> Deep-dive genre sections</div>
       </div>
-      <a href="home.html" class="btn-primary" style="display:inline-flex;">Browse All Movies →</a>
+      <a href="home.html" class="btn-primary" style="display:inline-flex;">Explore Library →</a>
     </div>
     <div class="preview-posters" id="previewPosters"></div>
   </div>
@@ -306,18 +349,18 @@
 <section class="cta-section">
   <div class="cta-inner">
     <h2>Ready to Start Watching?</h2>
-    <p>Join over a million cinephiles. Create your free account in under 10 seconds.</p>
+    <p>Join thousands of movie lovers. Create your account and start renting today.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-      <a href="login.html" class="btn-primary">Create Free Account</a>
-      <a href="home.html" class="btn-ghost">Browse First</a>
+      <a href="login.html" class="btn-primary">Create Account</a>
+      <a href="home.html" class="btn-ghost">Browse Movies</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="foot-logo"><span>Movie</span>Platform</div>
-  <p>© 2026 MoviePlatform. All rights reserved.</p>
+  <div class="foot-logo">CINEFLIX</div>
+  <p>© 2026 CINEFLIX. All rights reserved.</p>
 </footer>
 
 <script>
