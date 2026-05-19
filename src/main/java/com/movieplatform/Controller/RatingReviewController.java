@@ -96,6 +96,7 @@ public class RatingReviewController {
             return ResponseEntity.badRequest().body(Map.of("error", "Rating must be between 1 and 5"));
         }
 
+        //Checks whether the user exists in the database.That's prevent from non ratings.
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
 

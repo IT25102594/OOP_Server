@@ -67,10 +67,12 @@ public class CommentController {
             Integer movieId = payload.get("movieId") != null ? Integer.valueOf(payload.get("movieId").toString()) : null;
             String text = (String) payload.get("body");
 
+     //comment is empty or contains only spaces
             if (text == null || text.trim().isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of("error", "Comment text cannot be empty"));
             }
 
+            //Checks weather the user actually exists in the database
             User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
             Movie movie = movieRepository.findById(movieId).orElseThrow(() -> new RuntimeException("Movie not found"));
 

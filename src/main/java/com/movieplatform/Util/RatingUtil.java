@@ -1,5 +1,5 @@
 package com.movieplatform.Util;
-
+//Rating utility class that contains reusabla methods related to rating calculations and validations
 public class RatingUtil {
 
     /**
